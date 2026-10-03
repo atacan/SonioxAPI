@@ -1,0 +1,14 @@
+# Soniox's published CreateTemporaryApiKeyResponse example, copied unchanged from
+# https://soniox.com/docs/openapi.yaml (verified 2026-10-03).
+# Both the POST /v1/auth/temporary-api-key response and schema examples use the
+# same snx_temp_ value with example expires_at: 2025-02-22T22:47:37.150Z.
+# Ignore only the reviewed commit/file/rule/line findings; keep scanning both
+# specifications and all new commits for other credentials.
+
+# Generated OpenAPI specification.
+64a5ea37fddb483cc6edc5ad91b53d9820e8c099:openapi.yaml:generic-api-key:2244
+64a5ea37fddb483cc6edc5ad91b53d9820e8c099:openapi.yaml:generic-api-key:5012
+
+# The same examples in the original upstream specification.
+c4ede6998e19fca9c047214542771d8deaa464a7:original_openapi.yaml:generic-api-key:1958
+c4ede6998e19fca9c047214542771d8deaa464a7:original_openapi.yaml:generic-api-key:4624
