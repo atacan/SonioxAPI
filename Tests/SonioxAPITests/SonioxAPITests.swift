@@ -68,6 +68,7 @@ struct SonioxAPITests {
             transport: AsyncHTTPClientTransport(),
             middlewares: [AuthenticationMiddleware(apiKey: apiKey)]
         )
+        let examples = ResponseExamples()
 
         // UsefulThings makes FileHandle an AsyncSequence, so the WAV is streamed.
         let audioBody = HTTPBody(fileHandle, length: .known(Int64(byteCount)), iterationBehavior: .single)
@@ -76,8 +77,7 @@ struct SonioxAPITests {
                 .file(.init(payload: .init(body: audioBody), filename: audioURL.lastPathComponent))
             ])
         )
-        let uploadedFile = try uploadResponse.created.body.json
-        print("Uploaded file: \(uploadedFile.id)")
+        let uploadedFile: Components.Schemas.File = try await examples.uploadedFile(from: uploadResponse)
 
         var transcriptionID: String?
         var reachedTerminalState = false
@@ -91,9 +91,8 @@ struct SonioxAPITests {
                     )
                 )
             )
-            let transcription = try createResponse.created.body.json
+            let transcription: Components.Schemas.Transcription = try await examples.createdTranscription(from: createResponse)
             transcriptionID = transcription.id
-            print("Created transcription: \(transcription.id)")
 
             let finished = try await withPolling(
                 configuration: .init(
@@ -107,9 +106,7 @@ struct SonioxAPITests {
                 until: { $0.status == .completed || $0.status == .error },
                 operation: {
                     let response = try await client.get_transcription(path: .init(transcription_id: transcription.id))
-                    let current = try response.ok.body.json
-                    print("Transcription status: \(current.status.rawValue)")
-                    return current
+                    return try await examples.transcription(from: response)
                 }
             )
             reachedTerminalState = true
@@ -120,16 +117,17 @@ struct SonioxAPITests {
             #expect(finished.file_id == uploadedFile.id)
 
             let transcriptResponse = try await client.get_transcription_transcript(path: .init(transcription_id: transcription.id))
-            let transcript = try transcriptResponse.ok.body.json
+            let transcript: Components.Schemas.TranscriptionTranscript = try await examples.transcript(from: transcriptResponse)
             #expect(transcript.id == transcription.id)
             #expect(!transcript.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             #expect(!transcript.tokens.isEmpty)
-            print("Transcript:\n\(transcript.text)")
         } catch {
             if let transcriptionID, reachedTerminalState {
                 try? await Self.cleanUp(client: client, transcriptionID: transcriptionID, fileID: uploadedFile.id)
             } else if transcriptionID == nil {
-                _ = try? await client.delete_file(path: .init(file_id: uploadedFile.id))
+                if let response = try? await client.delete_file(path: .init(file_id: uploadedFile.id)) {
+                    try? await examples.deletedFile(from: response)
+                }
             } else {
                 // Keep the file while the job may still be queued or processing.
                 print("Polling stopped; retained transcription \(transcriptionID ?? "unknown") and file \(uploadedFile.id) for inspection.")
@@ -143,9 +141,10 @@ struct SonioxAPITests {
     }
 
     private static func cleanUp(client: Client, transcriptionID: String, fileID: String) async throws {
+        let examples = ResponseExamples()
         let transcriptionResponse = try await client.delete_transcription(path: .init(transcription_id: transcriptionID))
-        _ = try transcriptionResponse.noContent
+        try await examples.deletedTranscription(from: transcriptionResponse)
         let fileResponse = try await client.delete_file(path: .init(file_id: fileID))
-        _ = try fileResponse.noContent
+        try await examples.deletedFile(from: fileResponse)
     }
 }

@@ -53,7 +53,8 @@ let package = Package(
             dependencies: [
                 .target(name: "SonioxAPI"),
                 .product(name: "UsefulThings", package: "UsefulThings"),
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
     ]
 )

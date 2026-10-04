@@ -38,6 +38,16 @@ upload `60s_speech.wav` to `/v1/files`, create a `stt-async-v5` transcription at
 `/v1/transcriptions/{transcription_id}/transcript` and print the text. It verifies
 that the transcript contains text and tokens.
 
+`Tests/SonioxAPITests/ResponseExamples.swift` contains the response-handling
+examples used by this test. Each endpoint uses an exhaustive switch over its
+generated response enum, including payment-required (`code402`), conflict,
+other documented errors, and undocumented status codes. Explicitly typed local
+variables show how to access every file, transcription, transcript, token, and
+API error property. Console output includes property paths, Swift types, and
+values, including `nil` optionals and every token and nested validation error.
+Undocumented responses print their headers and complete body, walking JSON
+properties when possible; non-UTF-8 bodies are shown as base64.
+
 Keep `60s_speech.wav` at the package root. Set `SONIOX_API_KEY` (or `API_KEY`) in
 the environment, or copy `.env.example` to `.env` and replace its placeholder.
 Both the audio file and `.env` are ignored by Git.
@@ -77,6 +87,23 @@ API_BASE_URL=http://127.0.0.1:8080 \
 The generated endpoint paths already include `/v1`. A base URL ending in `/v2`
 would produce paths such as `/v2/v1/transcriptions`, so use the proxy origin
 unless the proxy explicitly rewrites that prefix.
+
+### Offline response decoding tests
+
+The JSON files in `Tests/SonioxAPITests/Resources` are bundled as test resources.
+`ResponseDecodingTests.swift` passes them through the generated client using an
+in-memory transport and the same fractional-second date configuration as the
+live example. The tests check the upload timestamp, transcript text, all 178
+tokens, and that every JSON property is printed. Additional cases cover all
+four transcription statuses, non-nil token metadata, nested API errors, every
+response enum case used by the live flow, and undocumented text, binary, and
+absent bodies.
+
+```bash
+swift test --filter ResponseDecodingTests
+```
+
+These tests require no API key or network requests.
 
 ## Secret scanning
 
