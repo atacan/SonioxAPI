@@ -1,5 +1,5 @@
 import Foundation
-import OpenAPIAsyncHTTPClient
+import SonioxAPIAsyncHTTPClient
 import OpenAPIRuntime
 import SonioxAPI
 import SonioxAPITypes
@@ -62,11 +62,9 @@ struct SonioxAPITests {
             serverURL = try Servers.Server1.url()
         }
 
-        let client = Client(
+        let client = Client.asyncHTTPClient(
             serverURL: serverURL,
-            configuration: .init(dateTranscoder: .iso8601WithFractionalSeconds),
-            transport: AsyncHTTPClientTransport(),
-            middlewares: [AuthenticationMiddleware(apiKey: apiKey)]
+            authentication: .bearer(apiKey)
         )
         let examples = ResponseExamples()
 

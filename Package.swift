@@ -23,11 +23,15 @@ let package = Package(
             name: "SonioxAPI",
             targets: ["SonioxAPI"]
         ),
+        .library(name: "SonioxAPIURLSession", targets: ["SonioxAPIURLSession"]),
+        .library(name: "SonioxAPIAsyncHTTPClient", targets: ["SonioxAPIAsyncHTTPClient"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.13.0"),
         .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.12.0"),
         .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.5.0"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-http-types", from: "1.0.0"),
         .package(url: "https://github.com/atacan/UsefulThings", branch: "main"),
     ],
     targets: [
@@ -35,7 +39,8 @@ let package = Package(
         .target(
             name: "SonioxAPITypes",
             dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
             ]
         ),
         // Client target: Contains generated client and custom code
@@ -43,15 +48,60 @@ let package = Package(
             name: "SonioxAPI",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
-                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
                 .target(name: "SonioxAPITypes"),
             ]
         ),
-        // Tests
+        // Transport conveniences both construct the shared generated Client.
+        .target(
+            name: "SonioxAPIURLSession",
+            dependencies: [
+                .target(name: "SonioxAPI"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+            ]
+        ),
+        .target(
+            name: "SonioxAPIAsyncHTTPClient",
+            dependencies: [
+                .target(name: "SonioxAPI"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+            ]
+        ),
+        .testTarget(
+            name: "SonioxAPITypesTests",
+            dependencies: [.target(name: "SonioxAPITypes")]
+        ),
+        .testTarget(
+            name: "SonioxAPIURLSessionTests",
+            dependencies: [
+                .target(name: "SonioxAPI"),
+                .target(name: "SonioxAPIURLSession"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ]
+        ),
+        .testTarget(
+            name: "SonioxAPIAsyncHTTPClientTests",
+            dependencies: [
+                .target(name: "SonioxAPI"),
+                .target(name: "SonioxAPIAsyncHTTPClient"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ]
+        ),
+        // Shared client and authentication tests
         .testTarget(
             name: "SonioxAPITests",
             dependencies: [
                 .target(name: "SonioxAPI"),
+                .target(name: "SonioxAPITypes"),
+                .target(name: "SonioxAPIAsyncHTTPClient"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "UsefulThings", package: "UsefulThings"),
             ],
             resources: [.process("Resources")]

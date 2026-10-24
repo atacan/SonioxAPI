@@ -23,9 +23,9 @@ paths:
       - in: query
         name: cursor
         schema:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
         required: false
         description: Pagination cursor for the next page of results.
       responses:
@@ -226,11 +226,11 @@ paths:
               type: object
               properties:
                 client_reference_id:
-                  maxLength: 256
-                  type: string
                   description: Optional tracking identifier string. Does not need
                     to be unique.
                   title: Client Reference Id
+                  maxLength: 256
+                  type: string
                 file:
                   description: The file to upload. Original file name will be used
                     unless a custom filename is provided.
@@ -531,9 +531,9 @@ paths:
       - in: query
         name: cursor
         schema:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
         required: false
         description: Pagination cursor for the next page of results.
       responses:
@@ -1250,9 +1250,9 @@ paths:
       - in: query
         name: cursor
         schema:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
         required: false
         description: Pagination cursor for the next page of results.
       responses:
@@ -1674,51 +1674,51 @@ paths:
       - in: query
         name: gender
         schema:
-          $ref: '#/components/schemas/TTSVoiceGender'
           description: Only return voices of this gender.
+          $ref: '#/components/schemas/TTSVoiceGender'
         required: false
         description: Only return voices of this gender.
       - in: query
         name: age
         schema:
-          $ref: '#/components/schemas/TTSVoiceAge'
           description: Only return voices of this age.
+          $ref: '#/components/schemas/TTSVoiceAge'
         required: false
         description: Only return voices of this age.
       - in: query
         name: accent
         schema:
-          maxLength: 40
-          type: string
           description: Only return voices with this accent.
           title: Accent
+          maxLength: 40
+          type: string
         required: false
         description: Only return voices with this accent.
       - in: query
         name: use_case
         schema:
+          description: Only return voices tagged with every listed use case. Repeat
+            the parameter to pass several values, or separate them with commas.
+          title: Use Case
           items:
             maxLength: 40
             type: string
           maxItems: 10
           type: array
-          description: Only return voices tagged with every listed use case. Repeat
-            the parameter to pass several values, or separate them with commas.
-          title: Use Case
         required: false
         description: Only return voices tagged with every listed use case. Repeat
           the parameter to pass several values, or separate them with commas.
       - in: query
         name: style
         schema:
+          description: Only return voices tagged with every listed style. Repeat the
+            parameter to pass several values, or separate them with commas.
+          title: Style
           items:
             maxLength: 40
             type: string
           maxItems: 10
           type: array
-          description: Only return voices tagged with every listed style. Repeat the
-            parameter to pass several values, or separate them with commas.
-          title: Style
         required: false
         description: Only return voices tagged with every listed style. Repeat the
           parameter to pass several values, or separate them with commas.
@@ -1736,11 +1736,11 @@ paths:
       - in: query
         name: cursor
         schema:
-          type: string
           description: Pagination cursor for the next page of results. Pass the same
             filters alongside it; the cursor points into the filtered list, not the
             whole catalogue.
           title: Cursor
+          type: string
         required: false
         description: Pagination cursor for the next page of results. Pass the same
           filters alongside it; the cursor points into the filtered list, not the
@@ -2394,9 +2394,9 @@ paths:
       - in: query
         name: cursor
         schema:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
         required: false
         description: Pagination cursor for the next page of results.
       responses:
@@ -3113,15 +3113,15 @@ components:
           $ref: '#/components/schemas/VoiceModelStatus'
           description: Has to be 'ready' for the voice to be usable with this model.
         error_type:
-          type: string
           description: Machine-readable error category when status is 'failed'. Stable
             across releases — safe to use in control flow. `null` otherwise.
           title: Error Type
-        error_message:
           type: string
+        error_message:
           description: Human-readable error message when status is 'failed' (e.g.
             the reference audio is too long). `null` otherwise.
           title: Error Message
+          type: string
       required:
       - model
       - status
@@ -3144,12 +3144,12 @@ components:
           title: Voices
           type: array
         next_page_cursor:
-          type: string
           description: A pagination token that references the next page of results.
             When more data is available, this field contains a value to pass in the
             cursor parameter of a subsequent request. When null, no additional results
             are available.
           title: Next Page Cursor
+          type: string
       required:
       - voices
       title: GetVoicesResponse
@@ -3167,10 +3167,10 @@ components:
     RecomputeVoicePayload:
       properties:
         model:
-          type: string
           description: The model to prepare this voice for. If omitted, the voice
             is prepared for every available model it is not ready for yet.
           title: Model
+          type: string
       title: RecomputeVoicePayload
       type: object
     GetFilesPayload:
@@ -3183,9 +3183,9 @@ components:
           title: Limit
           type: integer
         cursor:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
       title: GetFilesPayload
       type: object
     File:
@@ -3216,9 +3216,9 @@ components:
           title: Created At
           type: string
         client_reference_id:
-          type: string
           description: Tracking identifier string.
           title: Client Reference Id
+          type: string
       required:
       - id
       - filename
@@ -3263,12 +3263,12 @@ components:
           title: Files
           type: array
         next_page_cursor:
-          type: string
           description: A pagination token that references the next page of results.
             When more data is available, this field contains a value to pass in the
             cursor parameter of a subsequent request. When null, no additional results
             are available.
           title: Next Page Cursor
+          type: string
       required:
       - files
       title: GetFilesResponse
@@ -3305,7 +3305,6 @@ components:
           title: Request Id
           type: string
         more_info:
-          type: string
           description: 'Optional URL with additional information about this error.
             Points to the Soniox documentation
 
@@ -3313,6 +3312,7 @@ components:
 
             '
           title: More Info
+          type: string
       required:
       - status_code
       - error_type
@@ -3341,10 +3341,10 @@ components:
     UploadFilePayload:
       properties:
         client_reference_id:
-          maxLength: 256
-          type: string
           description: Optional tracking identifier string. Does not need to be unique.
           title: Client Reference Id
+          maxLength: 256
+          type: string
       title: UploadFilePayload
       type: object
     GetTranscriptionsPayload:
@@ -3357,9 +3357,9 @@ components:
           title: Limit
           type: integer
         cursor:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
       title: GetTranscriptionsPayload
       type: object
     GetTranscriptionsCountResponse:
@@ -3391,12 +3391,12 @@ components:
           title: Transcriptions
           type: array
         next_page_cursor:
-          type: string
           description: A pagination token that references the next page of results.
             When more data is available, this field contains a value to pass in the
             cursor parameter of a subsequent request. When null, no additional results
             are available.
           title: Next Page Cursor
+          type: string
       required:
       - transcriptions
       title: GetTranscriptionsResponse
@@ -3441,25 +3441,25 @@ components:
           title: Model
           type: string
         audio_url:
-          type: string
           description: URL of the file being transcribed.
           title: Audio Url
-        file_id:
-          format: uuid
           type: string
+        file_id:
           description: ID of the file being transcribed.
           title: File Id
+          format: uuid
+          type: string
         filename:
           description: Name of the file being transcribed.
           title: Filename
           type: string
         language_hints:
-          items:
-            type: string
-          type: array
           description: Expected languages in the audio. If not specified, languages
             are automatically detected.
           title: Language Hints
+          items:
+            type: string
+          type: array
         enable_speaker_diarization:
           description: When `true`, speakers are identified and separated in the transcription
             output.
@@ -3470,42 +3470,42 @@ components:
           title: Enable Language Identification
           type: boolean
         audio_duration_ms:
-          type: integer
           description: Duration of the audio in milliseconds. Only available after
             processing begins.
           title: Audio Duration Ms
+          type: integer
         error_type:
-          type: string
           description: Error type if transcription failed. `null` for successful or
             in-progress transcriptions.
           title: Error Type
-        error_message:
           type: string
+        error_message:
           description: Error message if transcription failed. `null` for successful
             or in-progress transcriptions.
           title: Error Message
-        webhook_url:
           type: string
+        webhook_url:
           description: URL to receive webhook notifications when transcription is
             completed or fails.
           title: Webhook Url
-        webhook_auth_header_name:
           type: string
+        webhook_auth_header_name:
           description: Name of the authentication header sent with webhook notifications.
           title: Webhook Auth Header Name
-        webhook_auth_header_value:
           type: string
+        webhook_auth_header_value:
           description: Authentication header value. Always returned masked as `******************`.
           title: Webhook Auth Header Value
+          type: string
         webhook_status_code:
-          type: integer
           description: HTTP status code received from your server when webhook was
             delivered. `null` if not yet sent.
           title: Webhook Status Code
+          type: integer
         client_reference_id:
-          type: string
           description: Tracking identifier string.
           title: Client Reference Id
+          type: string
       required:
       - id
       - status
@@ -3532,45 +3532,45 @@ components:
           title: Model
           type: string
         audio_url:
-          maxLength: 4096
-          pattern: ^https?://[^\s]+$
-          type: string
           description: URL of the audio file to transcribe. Cannot be specified if
             `file_id` is specified.
           title: Audio Url
-        file_id:
-          format: uuid
+          maxLength: 4096
+          pattern: ^https?://[^\s]+$
           type: string
+        file_id:
           description: ID of the uploaded file to transcribe. Cannot be specified
             if `audio_url` is specified. Keep the file until the transcription reaches
             `completed` or `error`; deleting it earlier fails the transcription with
             `file_not_found`.
           title: File Id
+          format: uuid
+          type: string
         language_hints:
+          description: Expected languages in the audio. If not specified, languages
+            are automatically detected.
+          title: Language Hints
           items:
             maxLength: 10
             type: string
           maxItems: 100
           type: array
-          description: Expected languages in the audio. If not specified, languages
-            are automatically detected.
-          title: Language Hints
         language_hints_strict:
-          type: boolean
           description: When `true`, the model will rely more on language hints.
           title: Language Hints Strict
-        enable_speaker_diarization:
           type: boolean
+        enable_speaker_diarization:
           description: When `true`, speakers are identified and separated in the transcription
             output.
           title: Enable Speaker Diarization
-        enable_language_identification:
           type: boolean
+        enable_language_identification:
           description: When `true`, language is detected for each part of the transcription.
           title: Enable Language Identification
+          type: boolean
         translation:
-          $ref: '#/components/schemas/TranslationConfig'
           description: Translation configuration.
+          $ref: '#/components/schemas/TranslationConfig'
         context:
           anyOf:
           - $ref: '#/components/schemas/StructuredContext'
@@ -3579,27 +3579,27 @@ components:
             of specialized terms.
           title: Context
         webhook_url:
-          maxLength: 256
-          pattern: ^https?://[^\s]+$
-          type: string
           description: URL to receive webhook notifications when transcription is
             completed or fails.
           title: Webhook Url
-        webhook_auth_header_name:
           maxLength: 256
+          pattern: ^https?://[^\s]+$
           type: string
+        webhook_auth_header_name:
           description: Name of the authentication header sent with webhook notifications.
           title: Webhook Auth Header Name
-        webhook_auth_header_value:
           maxLength: 256
           type: string
+        webhook_auth_header_value:
           description: Authentication header value sent with webhook notifications.
           title: Webhook Auth Header Value
-        client_reference_id:
           maxLength: 256
           type: string
+        client_reference_id:
           description: Optional tracking identifier string. Does not need to be unique.
           title: Client Reference Id
+          maxLength: 256
+          type: string
       required:
       - model
       title: CreateTranscriptionPayload
@@ -3607,28 +3607,28 @@ components:
     StructuredContext:
       properties:
         general:
+          description: General context items.
+          title: General
           items:
             $ref: '#/components/schemas/StructuredContextGeneralItem'
           type: array
-          description: General context items.
-          title: General
         text:
-          type: string
           description: Text context.
           title: Text
+          type: string
         terms:
+          description: Terms that might occur in speech.
+          title: Terms
           items:
             type: string
           type: array
-          description: Terms that might occur in speech.
-          title: Terms
         translation_terms:
-          items:
-            $ref: '#/components/schemas/StructuredContextTranslationTerm'
-          type: array
           description: Hints how to translate specific terms. Ignored if translation
             is not enabled.
           title: Translation Terms
+          items:
+            $ref: '#/components/schemas/StructuredContextTranslationTerm'
+          type: array
       title: StructuredContext
       type: object
     StructuredContextGeneralItem:
@@ -3670,14 +3670,14 @@ components:
           title: Type
           type: string
         target_language:
-          type: string
           title: Target Language
+          type: string
         language_a:
-          type: string
           title: Language A
-        language_b:
           type: string
+        language_b:
           title: Language B
+          type: string
       required:
       - type
       title: TranslationConfig
@@ -3744,25 +3744,25 @@ components:
           title: Confidence
           type: number
         speaker:
-          type: string
           description: Speaker identifier. Only present when speaker diarization is
             enabled.
           title: Speaker
-        language:
           type: string
+        language:
           description: Detected language code for this token. Only present when language
             identification is enabled.
           title: Language
+          type: string
         is_audio_event:
-          type: boolean
           description: Boolean indicating if this token represents an audio event.
             Only present when audio event detection is enabled.
           title: Is Audio Event
+          type: boolean
         translation_status:
-          type: string
           description: Translation status ("none", "original" or "translation"). Only
             when if translation is enabled.
           title: Translation Status
+          type: string
       required:
       - text
       - start_ms
@@ -4346,17 +4346,17 @@ components:
           title: Id
           type: string
         aliased_model_id:
-          type: string
           description: If this is an alias, the id of the aliased model.
           title: Aliased Model Id
+          type: string
         name:
           description: Name of the model.
           title: Name
           type: string
         context_version:
-          type: integer
           description: Version of context supported.
           title: Context Version
+          type: integer
         transcription_mode:
           $ref: '#/components/schemas/TranscriptionMode'
           description: Transcription mode of the model.
@@ -4399,20 +4399,18 @@ components:
           title: Two Way Translation Pairs
           type: array
         one_way_translation:
-          type: string
           description: When contains string 'all_languages', any laguage from languages
             can be used
           title: One Way Translation
-        two_way_translation:
           type: string
+        two_way_translation:
           description: When contains string 'all_languages',' any laguage pair from
             languages can be used
           title: Two Way Translation
+          type: string
       required:
       - id
-      - aliased_model_id
       - name
-      - context_version
       - transcription_mode
       - languages
       - supports_language_hints_strict
@@ -4422,8 +4420,6 @@ components:
       - endpoint_latency_adjustment_max_level
       - translation_targets
       - two_way_translation_pairs
-      - one_way_translation
-      - two_way_translation
       title: Model
       type: object
     TranscriptionMode:
@@ -4726,9 +4722,9 @@ components:
           title: Id
           type: string
         aliased_model_id:
-          type: string
           description: If this is an alias, the id of the aliased model.
           title: Aliased Model Id
+          type: string
         name:
           description: Name of the model.
           title: Name
@@ -4754,25 +4750,25 @@ components:
           title: Supports Voice Cloning
           type: boolean
         voice_cloning_max_audio_duration_ms:
-          type: integer
           description: Maximum duration (in milliseconds) of the reference audio accepted
             for voice cloning. Null when the model does not support voice cloning.
           title: Voice Cloning Max Audio Duration Ms
+          type: integer
         supports_speed_adjustment:
           description: Whether the model supports adjusting the speaking rate via
             the `speed` parameter.
           title: Supports Speed Adjustment
           type: boolean
         speed_min:
-          type: number
           description: Minimum supported speaking rate. Null when the model does not
             support speed adjustment.
           title: Speed Min
-        speed_max:
           type: number
+        speed_max:
           description: Maximum supported speaking rate. Null when the model does not
             support speed adjustment.
           title: Speed Max
+          type: number
         supports_silence_reduction:
           description: Whether the model supports shortening the pauses between words
             via the `reduce_silence` parameter.
@@ -4780,16 +4776,12 @@ components:
           type: boolean
       required:
       - id
-      - aliased_model_id
       - name
       - languages
       - voices
       - supports_timestamps
       - supports_voice_cloning
-      - voice_cloning_max_audio_duration_ms
       - supports_speed_adjustment
-      - speed_min
-      - speed_max
       - supports_silence_reduction
       title: TTSModel
       type: object
@@ -4878,12 +4870,12 @@ components:
           title: Voices
           type: array
         next_page_cursor:
-          type: string
           description: A pagination token that references the next page of results.
             When more data is available, this field contains a value to pass in the
             cursor parameter of a subsequent request. When null, no additional results
             are available.
           title: Next Page Cursor
+          type: string
       required:
       - voices
       title: GetSharedVoicesResponse
@@ -4925,32 +4917,32 @@ components:
           title: Text
           type: string
         sample_rate:
-          type: integer
           description: Optional output sample rate in Hz.
           title: Sample Rate
-        bitrate:
           type: integer
+        bitrate:
           description: Optional output bitrate in bits per second.
           title: Bitrate
+          type: integer
         client_reference_id:
-          maxLength: 256
-          type: string
           description: Optional tracking identifier string. Does not need to be unique.
             Ignored if the request authenticates with a temporary API key.
           title: Client Reference Id
+          maxLength: 256
+          type: string
         speed:
-          type: number
           description: Optional speaking rate of the generated speech, from `0.7`
             to `1.3`. `1.0` is the normal speed; lower values slow speech down and
             higher values speed it up. Defaults to `1.0`.
           title: Speed
+          type: number
         reduce_silence:
-          type: boolean
           description: Optional. When `true`, shortens the pauses between words so
             the generated speech flows more naturally. Defaults to `false`. Only supported
             on models with `supports_silence_reduction` set to `true`; enabling it
             on any other model returns an `invalid_request` error.
           title: Reduce Silence
+          type: boolean
       required:
       - model
       - language
@@ -4983,7 +4975,6 @@ components:
           title: Error Message
           type: string
         more_info:
-          type: string
           description: 'Optional URL pointing to the section on the Soniox docs error
             reference page that
 
@@ -4991,6 +4982,7 @@ components:
 
             '
           title: More Info
+          type: string
         request_id:
           description: 'Unique identifier for this request. Include it when contacting
             support at
@@ -5045,22 +5037,22 @@ components:
           title: Expires In Seconds
           type: integer
         client_reference_id:
-          maxLength: 256
-          type: string
           description: Optional tracking identifier string. Does not need to be unique.
           title: Client Reference Id
+          maxLength: 256
+          type: string
         single_use:
-          type: boolean
           description: If true, the temporary API key can be used only once.
           title: Single Use
+          type: boolean
         max_session_duration_seconds:
-          maximum: 18000
-          minimum: 1
-          type: integer
           description: Maximum connection duration in seconds for WebSocket and TTS
             HTTP streaming endpoints. If exceeded, the connection will be dropped.
             If not set, no limit is applied.
           title: Max Session Duration Seconds
+          maximum: 18000
+          minimum: 1
+          type: integer
       required:
       - usage_type
       - expires_in_seconds
@@ -5109,9 +5101,9 @@ components:
             recent entries first. When paginating, pass the same `sort` value alongside
             the cursor.
         cursor:
-          type: string
           description: Pagination cursor for the next page of results.
           title: Cursor
+          type: string
       required:
       - start_time
       - end_time
@@ -5127,12 +5119,12 @@ components:
           title: Usage Logs
           type: array
         next_page_cursor:
-          type: string
           description: A pagination token that references the next page of results.
             When more data is available, this field contains a value to pass in the
             cursor parameter of a subsequent request. When null, no additional results
             are available.
           title: Next Page Cursor
+          type: string
       required:
       - usage_logs
       title: GetUsageLogsResponse
@@ -5249,9 +5241,9 @@ components:
     UsageSummaryEntry:
       properties:
         model:
-          type: string
           description: Model identifier. `null` on the `total` entry.
           title: Model
+          type: string
         days:
           description: One UTC day (`YYYY-MM-DD`) per element, in ascending order.
             Every day in the requested window is present, including days with no usage.
@@ -5442,14 +5434,11 @@ components:
       description: Configured limits
       properties:
         transcribe_concurrent:
-          type: integer
           title: Transcribe Concurrent
-        tts_concurrent:
           type: integer
+        tts_concurrent:
           title: Tts Concurrent
-      required:
-      - transcribe_concurrent
-      - tts_concurrent
+          type: integer
       title: LimitValues
       type: object
     GetConcurrentStreamsHistoryResponse:

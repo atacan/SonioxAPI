@@ -12,8 +12,42 @@ version `0.3.0`, commit
 (the latest `main` revision on October 3, 2026). Apple's Swift OpenAPI Generator
 resolved to `1.13.1`; Swift dependencies are recorded in `Package.resolved`.
 
-The package exports `SonioxAPI` for the client and `SonioxAPITypes` for models,
-operation inputs and outputs, and `AuthenticationMiddleware(apiKey:)`.
+The package now exports four products:
+
+- `SonioxAPITypes`: generated models and operation inputs/outputs.
+- `SonioxAPI`: the generated client and shared authentication, with no transport dependency.
+- `SonioxAPIURLSession`: a `Client.urlSession` convenience factory.
+- `SonioxAPIAsyncHTTPClient`: a `Client.asyncHTTPClient` convenience factory.
+
+Choose a transport product in your application's target dependencies and import
+it alongside the core module:
+
+```swift
+import SonioxAPI
+import SonioxAPIURLSession
+import SonioxAPITypes
+
+let client = Client.urlSession(
+    serverURL: try Servers.Server1.url(),
+    authentication: .bearer(apiKey)
+)
+```
+
+For AsyncHTTPClient, import `SonioxAPIAsyncHTTPClient` instead of
+`SonioxAPIURLSession` and construct `Client.asyncHTTPClient` with the same arguments.
+Both factories default to `.iso8601WithFractionalSeconds`, matching Soniox's
+response timestamps. Pass `configuration:` to override that default. A directly
+constructed `Client` still needs the date configuration explicitly.
+
+The old `SonioxAPITypes.AuthenticationMiddleware(apiKey:)` has been removed.
+Use factory `authentication: .bearer(apiKey)`, or the core client's initializer
+with `transport:` and `authentication:`. This public API change requires an
+appropriate release version for existing consumers.
+
+The package was manually upgraded in place with the current bootstrapper on
+October 24, 2026. Its custom response examples, tests, resources, and UsefulThings
+dependency were retained. Regeneration preserves the manifest, factory defaults,
+and other manually maintained files; review new generated source changes.
 
 To regenerate with the latest bootstrapper after replacing the original spec:
 
@@ -26,7 +60,7 @@ Use `openapi-overlay.yaml` for manual schema corrections; `openapi.yaml` and
 
 ```bash
 swift build
-swift test
+swift test --filter 'ResponseDecodingTests|FactoryDefaultsTests|AuthenticationTests'
 ```
 
 ## Live speech-to-text test

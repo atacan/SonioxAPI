@@ -1148,7 +1148,7 @@ extension Components {
             /// If this is an alias, the id of the aliased model.
             ///
             /// - Remark: Generated from `#/components/schemas/Model/aliased_model_id`.
-            public var aliased_model_id: Swift.String
+            public var aliased_model_id: Swift.String?
             /// Name of the model.
             ///
             /// - Remark: Generated from `#/components/schemas/Model/name`.
@@ -1156,7 +1156,7 @@ extension Components {
             /// Version of context supported.
             ///
             /// - Remark: Generated from `#/components/schemas/Model/context_version`.
-            public var context_version: Swift.Int
+            public var context_version: Swift.Int?
             /// Transcription mode of the model.
             ///
             /// - Remark: Generated from `#/components/schemas/Model/transcription_mode`.
@@ -1188,11 +1188,11 @@ extension Components {
             /// When contains string 'all_languages', any laguage from languages can be used
             ///
             /// - Remark: Generated from `#/components/schemas/Model/one_way_translation`.
-            public var one_way_translation: Swift.String
+            public var one_way_translation: Swift.String?
             /// When contains string 'all_languages',' any laguage pair from languages can be used
             ///
             /// - Remark: Generated from `#/components/schemas/Model/two_way_translation`.
-            public var two_way_translation: Swift.String
+            public var two_way_translation: Swift.String?
             /// Creates a new `Model`.
             ///
             /// - Parameters:
@@ -1213,9 +1213,9 @@ extension Components {
             ///   - two_way_translation: When contains string 'all_languages',' any laguage pair from languages can be used
             public init(
                 id: Swift.String,
-                aliased_model_id: Swift.String,
+                aliased_model_id: Swift.String? = nil,
                 name: Swift.String,
-                context_version: Swift.Int,
+                context_version: Swift.Int? = nil,
                 transcription_mode: Components.Schemas.TranscriptionMode,
                 languages: [Components.Schemas.Language],
                 supports_language_hints_strict: Swift.Bool,
@@ -1225,8 +1225,8 @@ extension Components {
                 endpoint_latency_adjustment_max_level: Swift.Int,
                 translation_targets: [Components.Schemas.TranslationTarget],
                 two_way_translation_pairs: [Swift.String],
-                one_way_translation: Swift.String,
-                two_way_translation: Swift.String
+                one_way_translation: Swift.String? = nil,
+                two_way_translation: Swift.String? = nil
             ) {
                 self.id = id
                 self.aliased_model_id = aliased_model_id
@@ -1322,7 +1322,7 @@ extension Components {
             /// If this is an alias, the id of the aliased model.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/aliased_model_id`.
-            public var aliased_model_id: Swift.String
+            public var aliased_model_id: Swift.String?
             /// Name of the model.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/name`.
@@ -1344,7 +1344,7 @@ extension Components {
             /// Maximum duration (in milliseconds) of the reference audio accepted for voice cloning. Null when the model does not support voice cloning.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/voice_cloning_max_audio_duration_ms`.
-            public var voice_cloning_max_audio_duration_ms: Swift.Int
+            public var voice_cloning_max_audio_duration_ms: Swift.Int?
             /// Whether the model supports adjusting the speaking rate via the `speed` parameter.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/supports_speed_adjustment`.
@@ -1352,11 +1352,11 @@ extension Components {
             /// Minimum supported speaking rate. Null when the model does not support speed adjustment.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/speed_min`.
-            public var speed_min: Swift.Double
+            public var speed_min: Swift.Double?
             /// Maximum supported speaking rate. Null when the model does not support speed adjustment.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/speed_max`.
-            public var speed_max: Swift.Double
+            public var speed_max: Swift.Double?
             /// Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.
             ///
             /// - Remark: Generated from `#/components/schemas/TTSModel/supports_silence_reduction`.
@@ -1378,16 +1378,16 @@ extension Components {
             ///   - supports_silence_reduction: Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.
             public init(
                 id: Swift.String,
-                aliased_model_id: Swift.String,
+                aliased_model_id: Swift.String? = nil,
                 name: Swift.String,
                 languages: [Components.Schemas.Language],
                 voices: [Components.Schemas.TTSVoice],
                 supports_timestamps: Swift.Bool,
                 supports_voice_cloning: Swift.Bool,
-                voice_cloning_max_audio_duration_ms: Swift.Int,
+                voice_cloning_max_audio_duration_ms: Swift.Int? = nil,
                 supports_speed_adjustment: Swift.Bool,
-                speed_min: Swift.Double,
-                speed_max: Swift.Double,
+                speed_min: Swift.Double? = nil,
+                speed_max: Swift.Double? = nil,
                 supports_silence_reduction: Swift.Bool
             ) {
                 self.id = id
@@ -2354,17 +2354,17 @@ extension Components {
         /// - Remark: Generated from `#/components/schemas/LimitValues`.
         public struct LimitValues: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/LimitValues/transcribe_concurrent`.
-            public var transcribe_concurrent: Swift.Int
+            public var transcribe_concurrent: Swift.Int?
             /// - Remark: Generated from `#/components/schemas/LimitValues/tts_concurrent`.
-            public var tts_concurrent: Swift.Int
+            public var tts_concurrent: Swift.Int?
             /// Creates a new `LimitValues`.
             ///
             /// - Parameters:
             ///   - transcribe_concurrent:
             ///   - tts_concurrent:
             public init(
-                transcribe_concurrent: Swift.Int,
-                tts_concurrent: Swift.Int
+                transcribe_concurrent: Swift.Int? = nil,
+                tts_concurrent: Swift.Int? = nil
             ) {
                 self.transcribe_concurrent = transcribe_concurrent
                 self.tts_concurrent = tts_concurrent
